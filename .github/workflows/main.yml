@@ -78,7 +78,7 @@ jobs:
           token: ${{ secrets.DIGITALOCEAN_ACCESS_TOKEN }}
 
       - name: Save DigitalOcean kubeconfig with short-lived credentials
-        run: doctl kubernetes cluster kubeconfig save --expiry-seconds 600 odati-k8s-do-c413dfac082d-dev
+        run: doctl kubernetes cluster kubeconfig save --expiry-seconds 600 ${{ secrets.DO_CLUSTER_NAME }}
 
       # - name: Deploy to DigitalOcean Kubernetes
       #   run: kubectl apply -f ./k8s/mongodb/ -R
@@ -96,6 +96,7 @@ jobs:
       - name: Deploy MongoDB
         uses: Azure/k8s-deploy@v1.3
         with:
+ 
           manifests: |
             k8s/mongodb/deployment.yaml
             k8s/mongodb/service.yaml 
@@ -103,6 +104,7 @@ jobs:
       - name: Deploy webApi
         uses: Azure/k8s-deploy@v1.3
         with:
+          images: rodrigooda/api-bootcamp-produto:${{github.sha}}
           manifests: |
             k8s/api/deployment.yaml
             k8s/api/service.yaml 
