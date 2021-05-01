@@ -1,6 +1,6 @@
 # This is a basic workflow to help you get started with Actions
 
-name: CI/CD
+name: CICD
 
 # Controls when the action will run. 
 on:
@@ -71,21 +71,24 @@ jobs:
           # Kubernetes Config
           kubeconfig: ${{ secrets.K8S_DO_KUBECONFIG }}
 
-      - name: Deploy mongodb
-        uses: Azure/k8s-deploy@v1.3
+
+      - name: Install doctl
+        uses: digitalocean/action-doctl@v2
         with:
-          # Path to the manifest files which will be used for deployment.
-          manifests: |
-            ./k8s/mongodb/deployment.yaml
-            ./k8s/mongodb/service.yaml
+          token: ${{ secrets.DIGITALOCEAN_ACCESS_TOKEN }}
+
+      - name: Save DigitalOcean kubeconfig with short-lived credentials
+        run: doctl kubernetes cluster kubeconfig save --expiry-seconds 600 odati-k8s-do-c413dfac082d-dev
+
+      - name: Deploy to DigitalOcean Kubernetes
+        run: kubectl apply -f ./k8s/mongodb/ -R
+
+      - name: Verify deployment
+        run: kubectl rollout status deployment/mongodb 
 
 
-      - name: Deploy api
-        uses: Azure/k8s-deploy@v1.3
-        with:
-          # Path to the manifest files which will be used for deployment.
-          manifests: |
-            ./k8s/api/deployment.yaml
-            ./k8s/api/service.yaml
+      - name: Deploy to DigitalOcean Kubernetes
+        run: kubectl apply -f ./k8s/api/ -R
 
-      
+      - name: Verify deployment
+        run: kubectl rollout status deployment/api 
