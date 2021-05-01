@@ -1,6 +1,6 @@
 # This is a basic workflow to help you get started with Actions
 
-name: CI/CD
+name: CICD
 
 # Controls when the action will run. 
 on:
@@ -78,7 +78,7 @@ jobs:
           token: ${{ secrets.DIGITALOCEAN_ACCESS_TOKEN }}
 
       - name: Save DigitalOcean kubeconfig with short-lived credentials
-        run: doctl kubernetes cluster kubeconfig save --expiry-seconds 600 <cluster-name>
+        run: doctl kubernetes cluster kubeconfig save --expiry-seconds 600 odati-k8s-do-c413dfac082d-dev
 
       - name: Deploy to DigitalOcean Kubernetes
         run: kubectl apply -f ./k8s/mongodb/ -R
