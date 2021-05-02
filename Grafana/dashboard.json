@@ -171,7 +171,7 @@
         "steppedLine": false,
         "targets": [
           {
-            "expr": "sum(rate(prometheus_http_request_duration_seconds_sum[5m])) by (status_code, project_version) /\nsum(prometheus_rate(http_request_duration_seconds_count[5m])) by (status_code, project_version)",
+            "expr": "sum(rate(prometheus_http_request_duration_seconds_sum[5m])) by (status_code, project_version) /\nsum(rate(prometheus_http_request_duration_seconds_count[5m])) by (status_code, project_version)",
             "format": "time_series",
             "intervalFactor": 1,
             "legendFormat": "HTTP {{status_code}} Versão {{project_version}}",
