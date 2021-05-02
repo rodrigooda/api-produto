@@ -19,6 +19,29 @@ spec:
       containers:
       - name: api
         image: rodrigooda/api-bootcamp-produto:v2
+        resources:
+          requests:
+            memory: "32Mi"
+            cpu: "100m"
+          limits:
+            memory: "64Mi"
+            cpu: "200m"
+        livenessProbe:
+          httpGet:
+            path: /health
+            port: 8080
+          initialDelaySeconds: 0
+          periodSeconds: 5
+          successThreshold: 1
+          failureThreshold: 1
+        readinessProbe:
+          httpGet:
+            path: /read
+            port: 8080
+          initialDelaySeconds: 0
+          periodSeconds: 1
+          successThreshold: 1
+          failureThreshold: 1
         ports:
           - containerPort: 8080
         env:
