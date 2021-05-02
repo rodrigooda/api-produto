@@ -85,4 +85,5 @@ jobs:
           images: rodrigooda/api-bootcamp-produto:${{github.sha}}
           manifests: |
             k8s/api/deployment.yaml
-            k8s/api/service.yaml 
+            k8s/api/service.yaml
+            k8s/api/hpa.yaml 
